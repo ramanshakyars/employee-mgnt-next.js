@@ -6,16 +6,11 @@ pipeline {
         nodejs 'Node20'
     }
 
-    environment {
-        APP_PORT = "3000"
-    }
-
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/ramanshakyars/employee-mgnt-next.js.git'
+                checkout scm
             }
         }
 
@@ -31,34 +26,20 @@ pipeline {
             }
         }
 
-        stage('Stop Existing Server') {
-            steps {
-                sh '''
-                taskkill /F /IM node.exe || exit 0
-                '''
-            }
-        }
-
-        stage('Start NextJS') {
-            steps {
-                sh '''
-                start cmd /c "npm run start"
-                '''
-            }
-        }
-
     }
 
     post {
 
         success {
-            echo "Build Successful"
+            echo '✅ CI Build Successful'
         }
 
         failure {
-            echo "Build Failed"
+            echo '❌ CI Build Failed'
         }
 
+        always {
+            cleanWs()
+        }
     }
-
 }
