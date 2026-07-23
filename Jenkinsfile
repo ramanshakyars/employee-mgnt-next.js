@@ -21,19 +21,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'npm run build'
+                sh 'npm run build'
             }
         }
 
         stage('Stop Existing Server') {
             steps {
-                bat '''
+                sh '''
                 taskkill /F /IM node.exe || exit 0
                 '''
             }
@@ -41,7 +41,7 @@ pipeline {
 
         stage('Start NextJS') {
             steps {
-                bat '''
+                sh '''
                 start cmd /c "npm run start"
                 '''
             }
